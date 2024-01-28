@@ -14,7 +14,11 @@ export default function App() {
       if (!submittedLink) {
         return;
       }
-      const response = await fetch(submittedLink);
+      const response = await fetch(submittedLink, 
+          {
+            mode: 'no-cors',
+          }
+        );
       response.data = response.data.replace(/\\n/g, '');
       //find line startting with  X-WR-CALNAME:
       const calName = response.data.match(/X-WR-CALNAME:(.*)/)[1];
@@ -40,7 +44,11 @@ export default function App() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     const fetchData = async () => {
-      const response = await fetch(submittedLink);
+      const response = await fetch(submittedLink,
+        {
+          mode: 'no-cors',
+        }  
+     );
       const data = ical.parseICS(response.data);
       setCalendarData(data);
     };
