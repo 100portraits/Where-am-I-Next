@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react'
 
 const pwaConfig = {
   srcDir: "src",
-  filename: "sw.ts",
   strategies: "injectManifest",
   includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
   manifest: {
