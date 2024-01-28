@@ -14,7 +14,7 @@ export default function App() {
       if (!submittedLink) {
         return;
       }
-      const response = await axios.get(submittedLink);
+      const response = await fetch(submittedLink);
       response.data = response.data.replace(/\\n/g, '');
       //find line startting with  X-WR-CALNAME:
       const calName = response.data.match(/X-WR-CALNAME:(.*)/)[1];
@@ -40,7 +40,7 @@ export default function App() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     const fetchData = async () => {
-      const response = await axios.get(submittedLink);
+      const response = await fetch(submittedLink);
       const data = ical.parseICS(response.data);
       setCalendarData(data);
     };
