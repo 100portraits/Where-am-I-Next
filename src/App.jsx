@@ -14,19 +14,21 @@ export default function App() {
       if (!submittedLink) {
         return;
       }
-      const response = await fetch(submittedLink, 
-          {
-            mode: 'no-cors',
-          }
-        );
-      response.data = response.data.replace(/\\n/g, '');
-      //find line startting with  X-WR-CALNAME:
-      const calName = response.data.match(/X-WR-CALNAME:(.*)/)[1];
-      setStudentNumber(calName.split(": ")[1].split("@")[0]);
-      const data = ical.parseICS(response.data);
-      setCalendarData(data);
+      try {
+        const response = await fetch(submittedLink);
+        let Adata = await response.text();
+        console.log(Adata);
+        Adata = Adata.replace(/\\n/g, '');
+        //find line starting with  X-WR-CALNAME:
+        const calName = Adata.match(/X-WR-CALNAME:(.*)/)[1];
+        setStudentNumber(calName.split(": ")[1].split("@")[0]);
+        const data = ical.parseICS(Adata);
+        setCalendarData(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
-
+  
     fetchData();
   }, [submittedLink]);
 
@@ -44,14 +46,25 @@ export default function App() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     const fetchData = async () => {
-      const response = await fetch(submittedLink,
-        {
-          mode: 'no-cors',
-        }  
-     );
-      const data = ical.parseICS(response.data);
-      setCalendarData(data);
+      if (!submittedLink) {
+        return;
+      }
+      try {
+        const response = await fetch(submittedLink);
+        let Adata = await response.text();
+        console.log(Adata);
+        Adata = Adata.replace(/\\n/g, '');
+        //find line starting with  X-WR-CALNAME:
+        const calName = Adata.match(/X-WR-CALNAME:(.*)/)[1];
+        setStudentNumber(calName.split(": ")[1].split("@")[0]);
+        const data = ical.parseICS(Adata);
+        setCalendarData(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
+  
+    fetchData();
     await fetchData();
     setIsRefreshing(false);
   };
